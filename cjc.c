@@ -29,7 +29,7 @@ int main()
 
         if (letter == '\0')
         {
-            printf("The end of string exceeded on index %lu\n", state.char_index);
+            printf("The end of string on index %lu\n", state.char_index);
             break;
         }
 
