@@ -1,46 +1,54 @@
-#include <stddef.h>
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
+#include "cjc.h"
 
-const static char *json_example_1 = "{\"message\":\"Hello World!\\n\"}";
 
-struct State
+int cjc_parse_int(struct CJC_State *state, char *key, int *value_destination)
 {
-    const char* json;
-    size_t json_size;
-    size_t char_index;
-};
+    size_t key_size = strlen(key);
+    size_t read_key_size = 0;
 
-int main()
-{
-    struct State state = {
-        .json = json_example_1,
-        .json_size = strlen(json_example_1),
-        .char_index = 0,
-    };
+    bool read_key = false;
+    bool skip_key = false;
+    bool key_matched = false;
 
-    printf("json: %s\nposition: %lu\n", state.json, state.char_index);
-
-    while (state.char_index <= state.json_size)
+    for (size_t i = 0; i < state->json_string_size; i++)
     {
-        char letter = state.json[state.char_index];
+        printf("%c", state->json_string[i]);
 
-        if (letter == '\0')
+        if (state->json_string[i] == '"')
         {
-            printf("The end of string on index %lu\n", state.char_index);
-            break;
+            if (read_key)
+            {
+                printf("\nKey matched!\n");
+                key_matched = true;
+            }
+
+            read_key = !read_key;
+            skip_key = false;
+            continue;
         }
 
-        if (letter == '"')
+        if (skip_key)
         {
-            printf("I found the letter '%c'\n", letter);
+            continue;
         }
 
-        state.char_index++;
+        if (read_key && read_key_size < key_size)
+        {
+            if (state->json_string[i] != key[read_key_size])
+            {
+                skip_key = true;
+                read_key_size = 0;
+                continue;
+            }
+            read_key_size++;
+        }
     }
-
+    printf("\n");
 
     return 0;
 }
