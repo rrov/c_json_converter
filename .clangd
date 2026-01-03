@@ -1,0 +1,6 @@
+CompileFlags:
+    Add:
+        - -ansi
+        - -pedantic-errors
+        - -Wall
+        - -Wextra

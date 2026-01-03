@@ -1,26 +1,23 @@
 #ifndef CJC_H
 #define CJC_H
 
-#include <stddef.h>
-#include <stdint.h>
-
-struct CJC_State
-{
-    const char *json_string;
-    const size_t json_string_size;
+enum CJC_Result {
+    CJC_RESULT_SUCCESS,
+    CJC_RESULT_END_OF_SCOPE
 };
 
-struct CJC_JsonKeySubstring
-{
-    struct CJC_State *state;
-    
-    const char *key;
-    const size_t key_size;
-    
-    size_t index;
-    size_t shift;
+struct CJC_Cursor {
+    const unsigned char *json;
+    unsigned long index;
+    unsigned char is_array;
 };
 
-int cjc_parse_int(struct CJC_State *state, char *key, int *value_destination);
+/* Cursor movement */
+enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor);
+enum CJC_Result cjc_cursor_move_outside(struct CJC_Cursor *cursor);
+enum CJC_Result cjc_cursor_move_forward(struct CJC_Cursor *cursor);
+enum CJC_Result cjc_cursor_move_backward(struct CJC_Cursor *cursor);
+
+
 
 #endif
