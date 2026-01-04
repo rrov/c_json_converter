@@ -1,5 +1,5 @@
 lib:
-	cc -ansi -c cjc.c -o cjc.o
+	cc -static -ansi -c cjc.c -o cjc.o
 	ar rcs cjc.a cjc.o
 
 build-test:
