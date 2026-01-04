@@ -12,7 +12,7 @@ void json_example_1_test_1(void)
 
     cursor.json = json_example_1;
     cursor.index = 0;
-    cursor.is_array = 0;
+    cursor.inside_array = 0;
 
     result = cjc_cursor_move_inside(&cursor);
     
@@ -31,7 +31,7 @@ void json_example_2_test_1(void)
 
     cursor.json = json_example_2;
     cursor.index = 0;
-    cursor.is_array = 0;
+    cursor.inside_array = 0;
 
     result = cjc_cursor_move_inside(&cursor);
     

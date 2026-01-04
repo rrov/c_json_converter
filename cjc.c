@@ -24,8 +24,8 @@ enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor)
     ) ++cursor->index;
     
     if (cursor->json[cursor->index] == '\0') return CJC_END_OF_JSON;
-    if (cursor->json[cursor->index] == '{') cursor->is_array = 0;
-    if (cursor->json[cursor->index] == '[') cursor->is_array = 1;
+    if (cursor->json[cursor->index] == '{') cursor->inside_array = 0;
+    if (cursor->json[cursor->index] == '[') cursor->inside_array = 1;
 
     ++cursor->index;
     return CJC_RESULT_SUCCESS;

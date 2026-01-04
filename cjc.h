@@ -10,7 +10,7 @@ enum CJC_Result {
 struct CJC_Cursor {
     const char *json;
     unsigned long index;
-    unsigned char is_array;
+    unsigned char inside_array;
 };
 
 /* Cursor movement */
