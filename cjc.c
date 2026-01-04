@@ -17,6 +17,16 @@ static unsigned char character_is_syntax_character(char *character)
 
 enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor)
 {
-    while (cursor->json[cursor->index] != '{') ++cursor->index;
+    while (
+        cursor->json[cursor->index] != '{' &&
+        cursor->json[cursor->index] != '\0' &&
+        cursor->json[cursor->index] != '['
+    ) ++cursor->index;
+    
+    if (cursor->json[cursor->index] == '\0') return CJC_END_OF_JSON;
+    if (cursor->json[cursor->index] == '{') cursor->is_array = 0;
+    if (cursor->json[cursor->index] == '[') cursor->is_array = 1;
+
+    ++cursor->index;
     return CJC_RESULT_SUCCESS;
 }
