@@ -12,16 +12,10 @@ void cjc_cursor_move_inside_test_1(void)
 
     cursor.json = json_example_1;
     cursor.index = 0;
-    cursor.inside_array = 0;
 
     result = cjc_cursor_move_inside(&cursor);
     
-    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
-
-    if (cursor.inside_array)
-    {
-        printf("ERROR: cursor should not be inside an array\n");
-    }
+    printf("result: %2d, cursor index: %4lu\n", result, cursor.index);
 
     if (cursor.index != 1)
     {
@@ -36,17 +30,11 @@ void cjc_cursor_move_inside_test_2(void)
 
     cursor.json = json_example_1;
     cursor.index = 0;
-    cursor.inside_array = 0;
 
     result = cjc_cursor_move_inside(&cursor);
     result = cjc_cursor_move_inside(&cursor);
     
-    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
-
-    if (cursor.inside_array)
-    {
-        printf("ERROR: cursor should not be inside an array\n");
-    }
+    printf("result: %2d, cursor index: %4lu\n", result, cursor.index);
 
     if (result != CJC_END_OF_JSON)
     {
@@ -61,16 +49,10 @@ void cjc_cursor_move_inside_test_3(void)
 
     cursor.json = json_example_2;
     cursor.index = 0;
-    cursor.inside_array = 0;
 
     result = cjc_cursor_move_inside(&cursor);
     
-    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
-
-    if (!cursor.inside_array)
-    {
-        printf("ERROR: cursor should be inside an array\n");
-    }
+    printf("result: %2d, cursor index: %4lu\n", result, cursor.index);
 
     if (cursor.index != 1)
     {
@@ -85,17 +67,11 @@ void cjc_cursor_move_inside_test_4(void)
 
     cursor.json = json_example_2;
     cursor.index = 0;
-    cursor.inside_array = 0;
 
     result = cjc_cursor_move_inside(&cursor);
     result = cjc_cursor_move_inside(&cursor);
 
-    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
-
-    if (!cursor.inside_array)
-    {
-        printf("ERROR: cursor should be inside an array\n");
-    }
+    printf("result: %2d, cursor index: %4lu\n", result, cursor.index);
 
     if (result != CJC_END_OF_JSON)
     {
