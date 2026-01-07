@@ -5,7 +5,7 @@
 static const char *json_example_1 = "{\"message\":\"Hello World!\\n\"}";
 static const char *json_example_2 = "[\"Hello World!\"]";
 
-void json_example_1_test_1(void)
+void cjc_cursor_move_inside_test_1(void)
 {
     enum CJC_Result result;
     struct CJC_Cursor cursor;
@@ -16,7 +16,12 @@ void json_example_1_test_1(void)
 
     result = cjc_cursor_move_inside(&cursor);
     
-    printf("result: %d, cursor index: %lu\n", result, cursor.index);
+    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
+
+    if (cursor.inside_array)
+    {
+        printf("ERROR: cursor should not be inside an array\n");
+    }
 
     if (cursor.index != 1)
     {
@@ -24,7 +29,32 @@ void json_example_1_test_1(void)
     }
 }
 
-void json_example_2_test_1(void)
+void cjc_cursor_move_inside_test_2(void)
+{
+    enum CJC_Result result;
+    struct CJC_Cursor cursor;
+
+    cursor.json = json_example_1;
+    cursor.index = 0;
+    cursor.inside_array = 0;
+
+    result = cjc_cursor_move_inside(&cursor);
+    result = cjc_cursor_move_inside(&cursor);
+    
+    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
+
+    if (cursor.inside_array)
+    {
+        printf("ERROR: cursor should not be inside an array\n");
+    }
+
+    if (result != CJC_END_OF_JSON)
+    {
+        printf("ERROR: result should be CJC_END_OF_JSON\n");
+    }
+}
+
+void cjc_cursor_move_inside_test_3(void)
 {
     enum CJC_Result result;
     struct CJC_Cursor cursor;
@@ -35,7 +65,12 @@ void json_example_2_test_1(void)
 
     result = cjc_cursor_move_inside(&cursor);
     
-    printf("result: %d, cursor index: %lu\n", result, cursor.index);
+    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
+
+    if (!cursor.inside_array)
+    {
+        printf("ERROR: cursor should be inside an array\n");
+    }
 
     if (cursor.index != 1)
     {
@@ -43,9 +78,36 @@ void json_example_2_test_1(void)
     }
 }
 
+void cjc_cursor_move_inside_test_4(void)
+{
+    enum CJC_Result result;
+    struct CJC_Cursor cursor;
+
+    cursor.json = json_example_2;
+    cursor.index = 0;
+    cursor.inside_array = 0;
+
+    result = cjc_cursor_move_inside(&cursor);
+    result = cjc_cursor_move_inside(&cursor);
+
+    printf("result: %2d, cursor index: %4lu, inside array: %d\n", result, cursor.index, cursor.inside_array);
+
+    if (!cursor.inside_array)
+    {
+        printf("ERROR: cursor should be inside an array\n");
+    }
+
+    if (result != CJC_END_OF_JSON)
+    {
+        printf("ERROR: result should be CJC_END_OF_JSON\n");
+    }
+}
+
 int main(void)
 {
-    json_example_1_test_1();
-    json_example_2_test_1();
+    cjc_cursor_move_inside_test_1();
+    cjc_cursor_move_inside_test_2();
+    cjc_cursor_move_inside_test_3();
+    cjc_cursor_move_inside_test_4();
     return 0;
 }
