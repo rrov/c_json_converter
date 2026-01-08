@@ -37,6 +37,7 @@
 *.hex
 cjc
 test
+test-debug
 
 # Debug files
 *.dSYM/

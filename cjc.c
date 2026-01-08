@@ -44,6 +44,12 @@ enum CJC_Result cjc_cursor_move_outside(struct CJC_Cursor *cursor)
 {
     unsigned long square_brackets_count = 0;
     unsigned long curly_brackers_count  = 0;
+
+    if (cursor->index > 0)
+    {
+        --cursor->index;
+    }
+
     while
     (
         (
