@@ -1,4 +1,6 @@
 #include "cjc.h"
+
+
 static unsigned char character_is_syntax_character(char *character)
 {
     switch (*character)

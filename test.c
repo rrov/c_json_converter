@@ -1,6 +1,6 @@
-
 #include <stdio.h>
 #include "cjc.h"
+
 
 static const char *json_example_1 = "{\"message\":\"Hello World!\\n\"}";
 static const char *json_example_2 = "[\"Hello World!\"]";
