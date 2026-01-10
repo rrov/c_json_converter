@@ -16,9 +16,9 @@ static unsigned char character_is_syntax_character(char *character)
     }
 }
 
-static unsigned char cursor_on_escaped_character(struct CJC_Cursor *cursor)
+static unsigned char cursor_on_escaped_character(struct CJC_Cursor *cursor, char character)
 {
-    return cursor->index != 0 && cursor->json[cursor->index - 1] == '\\';
+    return cursor->index != 0 && cursor->json[cursor->index] == character && cursor->json[cursor->index - 1] == '\\';
 }
 
 enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor)
@@ -35,7 +35,8 @@ enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor)
     )
     {
         /* Each stop of cursor should be outside any quote */
-        if (cursor->json[cursor->index] == '"') inside_quote = inside_quote > 0 ? 0 : 1;
+        if (cursor->json[cursor->index] == '"' && !cursor_on_escaped_character(cursor, '"'))
+            inside_quote = inside_quote > 0 ? 0 : 1;
         
         ++cursor->index;
     }
@@ -80,10 +81,17 @@ enum CJC_Result cjc_cursor_move_outside(struct CJC_Cursor *cursor)
         }
 
         /* Each stop of cursor should be outside any quote */
-        if (cursor->json[cursor->index] == '"') inside_quote = inside_quote > 0 ? 0 : 1;
+        if (cursor->json[cursor->index] == '"' && !cursor_on_escaped_character(cursor, '"'))
+            inside_quote = inside_quote > 0 ? 0 : 1;
         
         --cursor->index;
     }
 
+    return CJC_RESULT_SUCCESS;
+}
+
+enum CJC_Result cjc_cursor_move_forward(struct CJC_Cursor *cursor)
+{
+    
     return CJC_RESULT_SUCCESS;
 }

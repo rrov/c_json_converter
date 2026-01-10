@@ -16,8 +16,8 @@ struct CJC_Cursor {
 /* Cursor movement */
 enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor);
 enum CJC_Result cjc_cursor_move_outside(struct CJC_Cursor *cursor);
-/*enum CJC_Result cjc_cursor_move_forward(struct CJC_Cursor *cursor);
-enum CJC_Result cjc_cursor_move_backward(struct CJC_Cursor *cursor);*/
+enum CJC_Result cjc_cursor_move_forward(struct CJC_Cursor *cursor);
+/*enum CJC_Result cjc_cursor_move_backward(struct CJC_Cursor *cursor);*/
 
 /* Advanced functions */
 
