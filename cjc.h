@@ -29,19 +29,15 @@ typedef unsigned char cjc_uint8;
 #if defined(_MSC_VER) || defined(__BORLANDC__)
     typedef __int64 cjc_int64;
     typedef unsigned __int64 cjc_uint64;
-#elif (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || defined(__GNUC__) || defined(__clang__)
-    #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-        #include <stdint.h>
-        typedef int64_t cjc_int64;
-        typedef uint64_t cjc_uint64;
-    #elif defined(__GNUC__) || defined(__clang__) || defined(__CC_ARM)
-        __extension__ typedef long long cjc_int64;
-        __extension__ typedef unsigned long long cjc_uint64;
-    #else
-        #define CJC_NO_INT64
-    #endif
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+    #include <stdint.h>
+    typedef int64_t cjc_int64;
+    typedef uint64_t cjc_uint64;
+#elif defined(__GNUC__) || defined(__clang__) || defined(__CC_ARM)
+    __extension__ typedef long long cjc_int64;
+    __extension__ typedef unsigned long long cjc_uint64;
 #else
-
+    #define CJC_NO_INT64
 #endif
 
 typedef cjc_uint8 cjc_bool;
