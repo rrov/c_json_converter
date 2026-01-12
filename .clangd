@@ -1,6 +1,8 @@
 CompileFlags:
     Add:
+        - -xc
         - -ansi
         - -pedantic-errors
         - -Wall
         - -Wextra
+        - -Wno-empty-translation-unit

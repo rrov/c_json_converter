@@ -1,4 +1,5 @@
 #include "cjc.h"
+#include <stddef.h>
 
 
 static unsigned char character_is_syntax_character(char *character)
@@ -23,7 +24,7 @@ static unsigned char cursor_on_escaped_character(struct CJC_Cursor *cursor, char
 
 enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor)
 {
-    unsigned char inside_quote = 0;
+    cjc_bool inside_quote = 0;
     while
     (
         inside_quote                    != 0    ||
@@ -49,9 +50,9 @@ enum CJC_Result cjc_cursor_move_inside(struct CJC_Cursor *cursor)
 
 enum CJC_Result cjc_cursor_move_outside(struct CJC_Cursor *cursor)
 {
-    unsigned long square_brackets_count = 0;
-    unsigned long curly_brackers_count  = 0;
-    unsigned char inside_quote = 0;
+    size_t square_brackets_count = 0;
+    size_t curly_brackers_count  = 0;
+    cjc_bool inside_quote = 0;
 
     if (cursor->index > 0)
     {
