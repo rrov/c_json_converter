@@ -81,17 +81,14 @@ enum CJC_Result cjc_cursor_interpretate_value_as_uint64(struct CJC_Cursor *curso
 /* Value interpretations (STRING) */
 enum CJC_Result cjc_cursor_value_symbol_strlen(struct CJC_Cursor *cursor, size_t *size); /* ignores the escapes */
 enum CJC_Result cjc_cursor_value_char_strlen(struct CJC_Cursor *cursor, size_t *size);
-enum CJC_Result cjc_cursor_value_read_symbols(struct CJC_Cursor *cursor, char *symbols); /* ignores the escapes */
-enum CJC_Result cjc_cursor_value_read_chars(struct CJC_Cursor *cursor, char *characters);
-enum CJC_Result cjc_cursor_value_read_by_symbol(struct CJC_Cursor *cursor, char *symbol); /* ignores the escapes */
-enum CJC_Result cjc_cursor_value_read_by_char(struct CJC_Cursor *cursor, char *character);
+enum CJC_Result cjc_cursor_value_symbol_strncpy(struct CJC_Cursor *cursor, char *dest, size_t n); /* ignores the escapes */
+enum CJC_Result cjc_cursor_value_char_strncpy(struct CJC_Cursor *cursor, char *dest, size_t n);
 
 /* Value interpretations (BOOLEAN) */
 enum CJC_Result cjc_cursor_interpretate_value_as_boolean(struct CJC_Cursor *cursor, cjc_bool *value);
 
 /* Value checks */
 enum CJC_Result cjc_cursor_value_is_null(struct CJC_Cursor *cursor, cjc_bool *value);
-enum CJC_Result cjc_cursor_value_is_undefined(struct CJC_Cursor *cursor, cjc_bool *value);
 
 /* === WRITING === */
 
