@@ -56,7 +56,7 @@ typedef cjc_int64 cjc_counter;
 enum CJC_RESULT {
     CJC_RESULT_SUCCESS,
     CJC_END_OF_JSON,
-    CJC_RESULT_MOVED_OUTSIDE_SCOPE /* Indecates cursor read all elements in array or object and moved outside */
+    CJC_RESULT_MOVED_OUTSIDE_SCOPE /* Indicates cursor read all elements in array or object and moved outside */
 };
 
 enum CJC_VALUE_TYPE {
