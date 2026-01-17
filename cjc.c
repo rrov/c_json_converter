@@ -147,7 +147,7 @@ enum CJC_RESULT cjc_cursor_move_backward(struct CJC_Cursor *cursor)
         --cursor->index;
     }
 
-    if (before_comma) ++cursor->index;
+    if (before_comma)                                           ++cursor->index;
     if (square_brackets_count > 0 || curly_brackers_count > 0)  return CJC_RESULT_MOVED_OUTSIDE_SCOPE;
 
     return CJC_RESULT_SUCCESS;
