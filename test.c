@@ -22,7 +22,7 @@ void cursor_index_error_print(struct CJC_Cursor *cursor, cjc_bool *fail, size_t 
     *fail = 1;
 }
 
-void test_print_status(char *test_name, cjc_bool fail)
+void test_status_print(char *test_name, cjc_bool fail)
 {
     if (fail)   printf("FAIL: %s\n", test_name);
     else        printf("SUCCESS: %s\n", test_name);
