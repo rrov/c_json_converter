@@ -86,8 +86,7 @@ enum CJC_RESULT cjc_cursor_move_forward(struct CJC_Cursor *cursor)
 
     while 
     (
-        inside_quote            == 0 && 
-        after_comma             == 0 && 
+        after_comma                 == 0 && 
         cursor->json[cursor->index] != '\0'
     )
     {
@@ -103,8 +102,9 @@ enum CJC_RESULT cjc_cursor_move_forward(struct CJC_Cursor *cursor)
         if (cursor->json[cursor->index] == '"' && !cursor_on_escaped_character(cursor, '"'))
             inside_quote = inside_quote > 0 ? 0 : 1;
 
-        if      (inside_quote == 1)                     after_comma = 0;
-        else if (cursor->json[cursor->index] == ',')    after_comma = 1;
+        if      (inside_quote == 1)                                     after_comma = 0;
+        else if (cursor->json[cursor->index] == ',')                    after_comma = 1;
+        if      (square_brackets_count > 0 || curly_brackers_count > 0) after_comma = 0;
 
         ++cursor->index;
     }
