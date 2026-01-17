@@ -209,7 +209,7 @@ void cjc_cursor_move_forward_test_1(void)
 
     if ((result = cjc_cursor_move_forward(&cursor)) != CJC_END_OF_JSON) result_error_print(&result, &fail);
     
-    test_print_status("cjc_cursor_move_forward_test_1", fail);
+    test_status_print("cjc_cursor_move_forward_test_1", fail);
 }
 
 int main(void)
