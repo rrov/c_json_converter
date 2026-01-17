@@ -10,7 +10,7 @@ static const char *json_example_4 = "{\"nes [ { ted\":{\"message\":\"Hello World
 
 void cjc_cursor_move_inside_test_1(void)
 {
-    enum CJC_Result result;
+    enum CJC_RESULT result;
     struct CJC_Cursor cursor;
 
     cursor.json = json_example_1;
@@ -29,7 +29,7 @@ void cjc_cursor_move_inside_test_1(void)
 
 void cjc_cursor_move_inside_test_2(void)
 {
-    enum CJC_Result result;
+    enum CJC_RESULT result;
     struct CJC_Cursor cursor;
 
     cursor.json = json_example_1;
@@ -49,7 +49,7 @@ void cjc_cursor_move_inside_test_2(void)
 
 void cjc_cursor_move_inside_test_3(void)
 {
-    enum CJC_Result result;
+    enum CJC_RESULT result;
     struct CJC_Cursor cursor;
 
     cursor.json = json_example_2;
@@ -68,7 +68,7 @@ void cjc_cursor_move_inside_test_3(void)
 
 void cjc_cursor_move_inside_test_4(void)
 {
-    enum CJC_Result result;
+    enum CJC_RESULT result;
     struct CJC_Cursor cursor;
 
     cursor.json = json_example_2;
@@ -88,7 +88,7 @@ void cjc_cursor_move_inside_test_4(void)
 
 void cjc_cursor_move_outside_test_1(void)
 {
-    enum CJC_Result result;
+    enum CJC_RESULT result;
     struct CJC_Cursor cursor;
 
     cursor.json = json_example_3;
@@ -128,7 +128,7 @@ void cjc_cursor_move_outside_test_1(void)
 
 void cjc_cursor_move_outside_test_2(void)
 {
-    enum CJC_Result result;
+    enum CJC_RESULT result;
     struct CJC_Cursor cursor;
 
     cursor.json = json_example_4;
