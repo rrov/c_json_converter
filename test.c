@@ -165,9 +165,25 @@ void cjc_cursor_move_forward_test_1(void)
     if ((result = cjc_cursor_move_forward(&cursor))) result_error_print(&result, &fail);
     if (cursor.index != 79) cursor_index_error_print(&cursor, &fail, 79);
 
-    if ((result = cjc_cursor_move_forward(&cursor)) != CJC_END_OF_JSON) result_error_print(&result, &fail);
+    if ((result = cjc_cursor_move_forward(&cursor)) != CJC_END_OF_SCOPE) result_error_print(&result, &fail);
     
     test_status_print("cjc_cursor_move_forward_test_1", fail);
+}
+
+void cjc_cursor_move_backward_test_1(void)
+{
+    enum CJC_RESULT     result;
+    struct CJC_Cursor   cursor;
+    cjc_bool            fail;
+
+    cursor.json         = json_example_5;
+    cursor.index        = 79;
+    fail                = 0;
+
+    if ((result = cjc_cursor_move_backward(&cursor))) result_error_print(&result, &fail);
+    if (cursor.index != 30) cursor_index_error_print(&cursor, &fail, 30);
+
+    test_status_print("cjc_cursor_move_backward_test_1", fail);
 }
 
 int main(void)
@@ -181,6 +197,8 @@ int main(void)
     cjc_cursor_move_outside_test_2();
 
     cjc_cursor_move_forward_test_1();
+
+    cjc_cursor_move_backward_test_1();
     
     return 0;
 }

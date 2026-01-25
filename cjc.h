@@ -55,8 +55,10 @@ typedef cjc_int64 cjc_counter;
 
 enum CJC_RESULT {
     CJC_RESULT_SUCCESS,
+    CJC_START_OF_JSON,
     CJC_END_OF_JSON,
-    CJC_RESULT_MOVED_OUTSIDE_SCOPE /* Indicates cursor read all elements in array or object and moved outside */
+    CJC_START_OF_SCOPE,
+    CJC_END_OF_SCOPE
 };
 
 enum CJC_VALUE_TYPE {
@@ -84,7 +86,7 @@ struct CJC_Cursor {
 
 
 /* === PARSING === */
-/* Cursor movement (primitive) */
+/* Cursor movement (basic) */
 enum CJC_RESULT cjc_cursor_move_inside(struct CJC_Cursor *cursor);
 enum CJC_RESULT cjc_cursor_move_outside(struct CJC_Cursor *cursor);
 enum CJC_RESULT cjc_cursor_move_forward(struct CJC_Cursor *cursor);

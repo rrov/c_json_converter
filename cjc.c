@@ -9,7 +9,7 @@ static cjc_bool cursor_on_escaped_character(struct CJC_Cursor *cursor, char char
 
 enum CJC_RESULT cjc_cursor_move_inside(struct CJC_Cursor *cursor)
 {
-    cjc_bool inside_quote = 0;
+    char inside_quote = 0;
     while
     (
         inside_quote                    != 0    ||
@@ -35,9 +35,9 @@ enum CJC_RESULT cjc_cursor_move_inside(struct CJC_Cursor *cursor)
 
 enum CJC_RESULT cjc_cursor_move_outside(struct CJC_Cursor *cursor)
 {
-    cjc_counter square_brackets_count   = 0;
-    cjc_counter curly_brackers_count    = 0;
-    cjc_bool inside_quote               = 0;
+    long square_brackets_count  = 0;
+    long curly_brackets_count   = 0;
+    char inside_quote           = 0;
 
     if (cursor->index > 0)
     {
@@ -49,7 +49,7 @@ enum CJC_RESULT cjc_cursor_move_outside(struct CJC_Cursor *cursor)
         (
             inside_quote                != 0    ||
             square_brackets_count       != 0    ||
-            curly_brackers_count        != 0
+            curly_brackets_count        != 0
         ) 
         ||
         (
@@ -61,9 +61,9 @@ enum CJC_RESULT cjc_cursor_move_outside(struct CJC_Cursor *cursor)
     {
         if (inside_quote == 0)
         {
-            if (cursor->json[cursor->index] == '}') --curly_brackers_count;
+            if (cursor->json[cursor->index] == '}') --curly_brackets_count;
             if (cursor->json[cursor->index] == ']') --square_brackets_count;
-            if (cursor->json[cursor->index] == '{') ++curly_brackers_count;
+            if (cursor->json[cursor->index] == '{') ++curly_brackets_count;
             if (cursor->json[cursor->index] == '[') ++square_brackets_count;
         }
 
@@ -79,76 +79,62 @@ enum CJC_RESULT cjc_cursor_move_outside(struct CJC_Cursor *cursor)
 
 enum CJC_RESULT cjc_cursor_move_forward(struct CJC_Cursor *cursor)
 {
-    cjc_counter square_brackets_count   = 0;
-    cjc_counter curly_brackers_count    = 0;
-    cjc_bool    inside_quote            = 0;
-    cjc_bool    after_comma             = 0;
+    char comma_count            = 0;
+    char inside_string          = 0;
+    long square_brackets_count  = 0;
+    long curly_brackets_count   = 0;
 
-    while 
-    (
-        after_comma                 == 0 && 
-        cursor->json[cursor->index] != '\0'
-    )
+    while (1)
     {
-        if (inside_quote == 0)
+        switch (cursor->json[cursor->index])
         {
-            if (cursor->json[cursor->index] == '}') --curly_brackers_count;
-            if (cursor->json[cursor->index] == ']') --square_brackets_count;
-            if (cursor->json[cursor->index] == '{') ++curly_brackers_count;
-            if (cursor->json[cursor->index] == '[') ++square_brackets_count;
+            case '"': inside_string && !cursor_on_escaped_character(cursor, '"') ? --inside_string : ++inside_string; break;
+            case '[': if (!inside_string) ++square_brackets_count; break;
+            case '{': if (!inside_string) ++curly_brackets_count; break;
+            case ']': if (!inside_string) --square_brackets_count; break;
+            case '}': if (!inside_string) --curly_brackets_count; break;
+            case ',': if (!inside_string && curly_brackets_count == 0 && square_brackets_count == 0) ++comma_count; break;
         }
 
-        /* Each stop of cursor should be outside any quote */
-        if (cursor->json[cursor->index] == '"' && !cursor_on_escaped_character(cursor, '"'))
-            inside_quote = inside_quote > 0 ? 0 : 1;
-
-        if      (inside_quote == 1)                                     after_comma = 0;
-        else if (cursor->json[cursor->index] == ',')                    after_comma = 1;
-        if      (square_brackets_count > 0 || curly_brackers_count > 0) after_comma = 0;
+        if (comma_count == 1 || (curly_brackets_count < 0 || square_brackets_count < 0)) break;
+        if (cursor->index == '\0') return CJC_END_OF_JSON;
 
         ++cursor->index;
     }
 
-    if (cursor->json[cursor->index] == '\0')                    return CJC_END_OF_JSON;
-    if (square_brackets_count < 0 || curly_brackers_count < 0)  return CJC_RESULT_MOVED_OUTSIDE_SCOPE;
-
+    if (curly_brackets_count < 0 || square_brackets_count < 0) return CJC_END_OF_SCOPE;
+    if (cursor->json[cursor->index] == ',') ++cursor->index;
     return CJC_RESULT_SUCCESS;
 }
 
 enum CJC_RESULT cjc_cursor_move_backward(struct CJC_Cursor *cursor)
 {
-    cjc_counter square_brackets_count   = 0;
-    cjc_counter curly_brackers_count    = 0;
-    cjc_bool    inside_quote            = 0;
-    cjc_bool    before_comma            = 0;
+    char comma_count            = 0;
+    char inside_string          = 0;
+    long square_brackets_count  = 0;
+    long curly_brackets_count   = 0;
 
-    while 
-    (
-        inside_quote            == 0 && 
-        before_comma            == 0 && 
-        cursor->index           != 0
-    )
+    if (cursor->json[cursor->index]) ++inside_string; /* The cursor can refer to '"' char */
+
+    while (1)
     {
-        if (inside_quote == 0)
+        switch (cursor->json[cursor->index])
         {
-            if (cursor->json[cursor->index] == '}') --curly_brackers_count;
-            if (cursor->json[cursor->index] == ']') --square_brackets_count;
-            if (cursor->json[cursor->index] == '{') ++curly_brackers_count;
-            if (cursor->json[cursor->index] == '[') ++square_brackets_count;
+            case '"': inside_string && !cursor_on_escaped_character(cursor, '"') ? --inside_string : ++inside_string; break;
+            case '[': if (!inside_string) ++square_brackets_count; break;
+            case '{': if (!inside_string) ++curly_brackets_count; break;
+            case ']': if (!inside_string) --square_brackets_count; break;
+            case '}': if (!inside_string) --curly_brackets_count; break;
+            case ',': if (!inside_string && curly_brackets_count == 0 && square_brackets_count == 0) ++comma_count; break;
         }
 
-        /* Each stop of cursor should be outside any quote */
-        if (cursor->json[cursor->index] == '"' && !cursor_on_escaped_character(cursor, '"'))
-            inside_quote = inside_quote > 0 ? 0 : 1;
-
-        if      (inside_quote == 1)                     before_comma = 0;
-        else if (cursor->json[cursor->index] == ',')    before_comma = 1;
+        if (comma_count == 2 || (curly_brackets_count > 0 || square_brackets_count > 0)) break;
+        if (cursor->index == 0) return CJC_START_OF_JSON;
 
         --cursor->index;
     }
 
-    if (before_comma)                                           ++cursor->index;
-    if (square_brackets_count > 0 || curly_brackers_count > 0)  return CJC_RESULT_MOVED_OUTSIDE_SCOPE;
-
+    ++cursor->index;
+    if (curly_brackets_count > 0 || square_brackets_count > 0) return CJC_START_OF_SCOPE;
     return CJC_RESULT_SUCCESS;
 }
